@@ -11,13 +11,19 @@ class Sidebar {
     this.initAuthLinks();
     this.initToggleButton();
   }
-
   /**
    * Отвечает за скрытие/показа боковой колонки:
    * переключает два класса для body: sidebar-open и sidebar-collapse
    * при нажатии на кнопку .sidebar-toggle
    * */
   static initToggleButton() {
+    const sidebar = document.querySelector(".sidebar-toggle");
+
+    sidebar.addEventListener("click", () => {
+      const body = document.querySelector("body");
+      body.classList.toggle("sidebar-open");
+      body.classList.toggle("sidebar-collapse");
+    })
 
   }
 
