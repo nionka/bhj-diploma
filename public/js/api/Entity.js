@@ -40,7 +40,7 @@ class Entity {
    * */
   static get( id = '', data, callback = f => f ) {
     return createRequest({data,
-                id: this.id,
+                id: id,
                 url: this.URL,
                 method: "GET",
                 responseType: "json",
@@ -52,10 +52,10 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static remove( id = '', data, callback = f => f ) {
-    let newData = Object.assign({_method: "DELETE"}, {id: this.id}, data);
+    let newData = Object.assign({_method: "DELETE"}, {id: id}, data);
     return createRequest({newData,
                 method: "POST",
-                url: this.URL,
+                url: this.URL + "/",
                 responseType: "json",
                 callback
                 })

@@ -6,24 +6,25 @@ const createRequest = (options = {}) => {
 
     const xhr = new XMLHttpRequest();
     let formData = new FormData();
-    let url = options.url + "?";
 
     xhr.responseType = options.responseType;
     xhr.withCredentials = true;
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            options.callback(null, options.response);
+            callback: (null, xhr.response);
         }
     }
 
     try {
         if (options.method === "GET") {
+            let url = options.url + "?";
+
             for (let key in options.data) {
                 url += key + "=" + options.data[key] + "&";
             }
             url.substring(0, url.length - 1);
-            xhr.open("GET", url);
+            xhr.open(options.method, url);
             xhr.send();
         } else {
             for (let key in options.data) {
@@ -33,7 +34,7 @@ const createRequest = (options = {}) => {
             xhr.send(formData);
         }
     } catch (err) {
-        options.callback(err)
+        callback: (err)
     }
 
     return xhr

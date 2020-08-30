@@ -18,7 +18,7 @@ class AsyncForm {
     }
 
     this.element = element;
-    element.registerEvents();
+    this.registerEvents();
 
   }
 

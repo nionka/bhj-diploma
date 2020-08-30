@@ -11,13 +11,19 @@ class TransactionsPage {
    * через registerEvents()
    * */
   constructor( element ) {
+    if (element === "undefined") {
+      throw "oshibka"
+    }
 
+    this.element = element;
+    this.registerEvents();
   }
 
   /**
    * Вызывает метод render для отрисовки страницы
    * */
   update() {
+    this.render(options);
 
   }
 
@@ -28,6 +34,13 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
+    this.querySelctor(".remove-account").addEventListener("click", () => {
+      this.removeAccount();
+    })
+
+    this.querySelctor(".transaction__remove").addEventListener("click", () => {
+      this.removeTransaction(this.querySelctor(".transaction__remove").dataset.id);
+    })
 
   }
 

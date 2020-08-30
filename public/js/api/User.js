@@ -44,12 +44,13 @@ class User {
       method: "GET",
       responseType: "json",
       callback(err, response) {
-      if (response.success && response) {
-        this.cetCurrent(response.user);
+      if (response && response.user) {
+        User.setCurrent(response.user);
+        callback(response)
       } else {
-        this.unsetCurrent();
+        User.unsetCurrent();
       }
-        callback(err, response)
+        
       }
     })
   }
@@ -67,10 +68,11 @@ class User {
       method: "POST",
       responseType: "json",
       callback(err, response) {
-        if(response.success && response) {
-          this.setCurrent(response.user);
+        if(response && response.user) {
+          User.setCurrent(response.user);
+          callback(response)
         }
-        callback(err, response)
+        
       }
     })
 
@@ -83,16 +85,18 @@ class User {
    * User.setCurrent.
    * */
   static register( data, callback = f => f ) {
+    console.log(data)
     return createRequest ({
       data: data,
       url: this.URL + "/register",
       method: "POST",
       responseType: "json",
       callback(err, response) {
-        if(response.success && response) {
-          this.setCurrent(response.user);
+        if(response && response.user) {
+          User.setCurrent(response.user);
+          callback(response)
         }
-        callback(err, response)
+        
       }
     })
   }
@@ -108,10 +112,11 @@ class User {
       method: "POST",
       responseType: "json",
       callback(err, response) {
-        if(response.success && response) {
-          this.unsetCurrent();
+        if(response && response.user) {
+          User.unsetCurrent();
+          callback(response)
         }
-        callback(err, response)
+        
       }
     })
   }

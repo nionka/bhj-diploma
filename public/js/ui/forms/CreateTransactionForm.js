@@ -1,14 +1,18 @@
+const { response } = require("express");
+
 /**
  * Класс CreateTransactionForm управляет формой
  * создания новой транзакции
  * Наследуется от AsyncForm
  * */
-class CreateTransactionForm {
+class CreateTransactionForm extends AsyncForm {
   /**
    * Вызывает родительский конструктор и
    * метод renderAccountsList
    * */
   constructor( element ) {
+    this.element = element;
+    this.renderAccountsList();
 
   }
 
@@ -17,7 +21,15 @@ class CreateTransactionForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
+    const accounts = this.element.querySelectorAll(".accounts-select");
+    Account.list(User.current(), (err, response) => {
+      accounts.innerHTML = "";
 
+      response.data.forEach(value => {
+        accounts.innerHTML += `
+        <option value="${value.id}>${value.name}</option>"`
+      });
+    })
   }
 
   /**
@@ -27,6 +39,13 @@ class CreateTransactionForm {
    * в котором находится форма
    * */
   onSubmit( options ) {
-
+    Transaction.create(options.data, (err, response) => {
+      if (response && response.success) {
+          this.element.reset();
+          App.getModal("newIncome").close();
+          App.getModal("newExpense").close();
+          App.update();
+      }
+    })
   }
 }
