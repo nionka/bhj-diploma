@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 /**
  * Класс CreateTransactionForm управляет формой
  * создания новой транзакции
@@ -11,7 +9,8 @@ class CreateTransactionForm extends AsyncForm {
    * метод renderAccountsList
    * */
   constructor( element ) {
-    this.element = element;
+
+    super(element);
     this.renderAccountsList();
 
   }
@@ -21,13 +20,12 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
-    const accounts = this.element.querySelectorAll(".accounts-select");
+    const accounts = this.element.querySelector(".accounts-select");
     Account.list(User.current(), (err, response) => {
-      accounts.innerHTML = "";
+      accounts.innerHTML = ""
 
       response.data.forEach(value => {
-        accounts.innerHTML += `
-        <option value="${value.id}>${value.name}</option>"`
+        accounts.innerHTML += `<option value="${value.id}">${value.name}</option>`
       });
     })
   }

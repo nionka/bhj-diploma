@@ -11,8 +11,8 @@ class TransactionsWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-    if(element === "undefined") {
-      throw "oshibka"
+    if(!element) {
+      throw new Error("oshibka")
     }
 
     this.element = element;
@@ -26,11 +26,13 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
-    this.querySelector(".create-income-button").addEventListener("click", () => {
+    this.element.querySelector(".create-income-button").addEventListener("click", () => {
+      event.preventDefault();
       App.getModal("newIncome").open();
     })
 
-    this.querySelector(".create-expense-button").addEventListener("click", () => {
+    this.element.querySelector(".create-expense-button").addEventListener("click", () => {
+      event.preventDefault();
       App.getModal("newExpense").open();
     })
 

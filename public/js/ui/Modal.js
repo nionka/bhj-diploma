@@ -14,8 +14,8 @@ class Modal {
    * */
   constructor( element ) {
 
-    if (element === "undefined") {
-      throw "Oshibka"
+    if (!element) {
+      throw new Error("Oshibka")
     }
 
     this.element = element;
@@ -42,7 +42,6 @@ class Modal {
    * Закрывает текущее окно (Modal.close())
    * */
   onClose( e ) {
-    e.preventDefault();
       this.close();
   }
   /**

@@ -13,8 +13,8 @@ class AccountsWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-    if (element === "undefined") {
-      throw "oshibka"
+    if (!element) {
+      throw new Error ("oshibka")
     }
 
     this.element = element;
@@ -31,22 +31,14 @@ class AccountsWidget {
    * */
   registerEvents() {
     document.querySelector(".create-account").addEventListener("click", () => {
-      App.getModal("create-account").open();
-
-      let accounts = document.querySelectorAll(".account");
-
-      if (accounts) {
-        accounts = Array.from(accounts);
-        accounts.forEach(value => {
-          value.addEventListener("click", () => {
-            AccountsWidget.onSelectAccount();
-          })
-        })
-      }
-      
-
+      App.getModal("createAccount").open();
     })
 
+    document.querySelector(".accounts-panel").addEventListener("click", e => {
+      if (e.target.closest(".account")) {
+        this.onSelectAccount(e.target.closest(".account"))
+      }
+    })
   }
 
   /**
@@ -62,11 +54,14 @@ class AccountsWidget {
   update() {
     if (User.current()) {
       Account.list(User.current(), (err, response) => {
-        this.clear();
-        if (response.data) {
-          response.data.forEach(value => {
-            this.renderItem(value);
-          })
+        if (response && response.success) {
+          
+          if (response.data) {
+            this.clear();
+            response.data.forEach(value => {
+              this.renderItem(value);
+            })
+        }
         }
       })
     }
@@ -80,12 +75,10 @@ class AccountsWidget {
    * */
   clear() {
     let accounts = document.querySelectorAll(".account");
-
-    if (accounts) {
-      Array.from(accounts).forEach(value => {
+      accounts.forEach(value => {
         value.remove();
       })
-    }
+    
 
   }
 
@@ -114,9 +107,9 @@ class AccountsWidget {
    * */
   getAccountHTML( item ) {
     return `
-      <li class="active account" data-id=${item.id}>
+      <li class="account" data-id="${item.id}">
           <a href="#">
-              <span>${item.name}</span>
+              <span>${item.name} / </span>
               <span>${item.sum}</span>
           </a>
       </li>

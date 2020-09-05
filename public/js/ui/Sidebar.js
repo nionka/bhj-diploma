@@ -18,9 +18,10 @@ class Sidebar {
    * */
   static initToggleButton() {
     const sidebar = document.querySelector(".sidebar-toggle");
+    const body = document.querySelector(".sidebar-mini");
 
     sidebar.addEventListener("click", () => {
-      const body = document.querySelector("body");
+      event.preventDefault();
       body.classList.toggle("sidebar-open");
       body.classList.toggle("sidebar-collapse");
     })
@@ -40,18 +41,24 @@ class Sidebar {
     const logout = document.querySelector(".menu-item_logout");
 
     register.addEventListener("click", () => {
+      event.preventDefault();
       let elem = App.getModal("register");
       elem.open();
     })
 
     login.addEventListener("click", () => {
+      event.preventDefault();
       let elem = App.getModal("login");
       elem.open();
     })
 
     logout.addEventListener("click", () => {
-      User.logout();
-      App.setState("init");
+      event.preventDefault();
+      User.logout({}, (err, response) => {
+        if (response.success) {
+          App.setState("init");
+        }
+      })
     })
 
   }

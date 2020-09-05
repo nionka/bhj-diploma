@@ -11,8 +11,8 @@ class UserWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-    if (element === "undefined") {
-      throw "oshibka"
+    if (!element) {
+      throw new Error("oshibka")
     }
 
     this.element = element;
@@ -27,13 +27,9 @@ class UserWidget {
    * авторизованного пользователя
    * */
   update() {
-    let user = User.current();
-
-    if (user) {
+    if (User.current()) {
       const userName = document.querySelector(".user-name");
-      userName.textContent = user;
+      userName.textContent = User.current().name;
     }
-
-
   }
 }

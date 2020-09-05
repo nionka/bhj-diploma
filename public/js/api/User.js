@@ -11,7 +11,7 @@ class User {
    * локальном хранилище.
    * */
   static setCurrent(user) {
-    localStorage.setItem("user", user);
+    localStorage.setItem("user", JSON.stringify(user));
 
   }
 
@@ -28,7 +28,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     return user
 
   }
@@ -43,14 +43,13 @@ class User {
       url: this.URL + "/current",
       method: "GET",
       responseType: "json",
-      callback(err, response) {
+      callback: (err, response) => {
       if (response && response.user) {
         User.setCurrent(response.user);
-        callback(response)
       } else {
         User.unsetCurrent();
       }
-        
+       callback(err,response) 
       }
     })
   }
@@ -67,12 +66,11 @@ class User {
       url: this.URL + "/login",
       method: "POST",
       responseType: "json",
-      callback(err, response) {
+      callback: (err, response) => {
         if(response && response.user) {
           User.setCurrent(response.user);
-          callback(response)
         }
-        
+        callback(err, response)  
       }
     })
 
@@ -85,18 +83,16 @@ class User {
    * User.setCurrent.
    * */
   static register( data, callback = f => f ) {
-    console.log(data)
     return createRequest ({
       data: data,
       url: this.URL + "/register",
       method: "POST",
       responseType: "json",
-      callback(err, response) {
+      callback: (err, response) => {
         if(response && response.user) {
           User.setCurrent(response.user);
-          callback(response)
         }
-        
+        callback(err, response)
       }
     })
   }
@@ -111,12 +107,11 @@ class User {
       url: this.URL + "/logout",
       method: "POST",
       responseType: "json",
-      callback(err, response) {
+      callback: (err, response) => {
         if(response && response.user) {
           User.unsetCurrent();
-          callback(response)
         }
-        
+        callback(err, response)  
       }
     })
   }

@@ -13,8 +13,8 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor( element ) {
-    if (element === "undefined") {
-      throw "oshibka"
+    if (!element) {
+      throw new Error("Oshibka")
     }
 
     this.element = element;
@@ -27,13 +27,11 @@ class AsyncForm {
    * вызывает метод submit()
    * */
   registerEvents() {
-    const forms = Array.from(document.querySelectorAll(".form"));
-    forms.forEach(value => {
-      value.addEventListener("submit", () => {
+    
+      this.element.addEventListener("submit", (event) => {
         event.preventDefault();
-        value.submit();
+        this.submit();
       })
-    })
   }
 
   /**
@@ -44,14 +42,15 @@ class AsyncForm {
    * }
    * */
   getData() {
-    const formData = new FormData();
+    const formData = new FormData(this.element);
+    const entries = formData.entries();
+    let formDataObj = {};
 
-    const input = Array.from(this.querySelectorAll("input"));
-    input.forEach(elem => {
-      formData.append(elem.getAttribute("name"), elem.value)
-    })
-
-    return formData
+    for (let key of entries) {
+      formDataObj[key[0]] = key[1];
+    }
+    
+    return formDataObj
   }
 
   onSubmit( options ) {
